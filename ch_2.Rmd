@@ -1,0 +1,89 @@
+---
+title: "ch_2"
+author: "Kai Pak"
+date: "1/29/2019"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+## Chapter 2: Statistical Learning
+### Conceptual Questions
+1. 
+  - a) More flexible model performs better as it can fit the larger sample size.*
+  - b) Worse as you tend to overfit small sample size.
+  - c) Highly non-linear model suggests flexible model performs better as it would have more degrees of freedom to fit the curve.
+  - d) hi $\textit{Var}(\epsilon)$ indicates a lot of noise in signal so more flexible model would perform worse.
+
+2. 
+  - a) Regression
+  - b) Classification.
+  - c) Regression
+  
+3.  Parametric methods assume (guess) at a form and use data and model to derive parameters. Non-parametric does not make such assumptions and do not try to reduce problem of estimating $f$ to a small number of parameters. Much more observations generally required.
+
+### Applied - College Dataset
+
+```{r}
+college <- read.csv("data/College.csv")
+rownames(college) <- college[,1]
+college <- college[,-1]
+head(college)
+```
+This renders the first column as private.
+
+```{r}
+summary(college)
+```
+
+```{r}
+pairs(college[,1:4])
+```
+```{r}
+pairs(college[,5:8])
+```
+```{r}
+pairs(college[,9:10])
+```
+```{r}
+plot(college$Private, college$Outstate)
+```
+
+### Defining Variable to Classify as Elite/Non-Elite
+```{r}
+Elite <- rep("No", nrow(college))
+Elite[college$Top10perc > 50] <- "Yes"
+Elite <- as.factor(Elite)
+college <- data.frame(college, Elite)
+head(college)
+```
+
+```{r}
+plot(college$Elite, college$Outstate)
+```
+
+```{r}
+par(mfrow=c(2,2))
+hist(college$Books, breaks = 10)
+plot(college$Elite, college$P.Undergrad)
+plot(college$Accept, college$Apps)
+plot(college$Accept, college$PhD)
+```
+
+### Applied Boston housing dataset
+
+```{r}
+library(MASS)
+```
+
+```{r}
+plot(Boston$tax, Boston$crim)
+```
+
+```{r}
+plot(Boston$ptratio, Boston$tax)
+```
+
